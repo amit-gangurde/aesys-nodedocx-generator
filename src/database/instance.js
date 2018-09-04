@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const { DB_ADDRESS, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
-const instance = () => {
+const _instance = () => {
   const db = mysql.createConnection({
     host: DB_ADDRESS,
     user: DB_USER,
@@ -13,5 +13,5 @@ const instance = () => {
 };
 
 module.exports = {
-  getInstance: instance
+  getInstance: _instance
 };

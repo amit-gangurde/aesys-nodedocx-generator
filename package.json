@@ -1,4 +1,8 @@
 {
+  "name": "aesys-docx-generator",
+  "author": {
+    "name": "Daniele Irsuti"
+  },
   "scripts": {
     "start": "node src/index"
   },

@@ -1,4 +1,5 @@
 const db = require('./database/instance').getInstance();
+const queries = require('./database/queries')(db);
 const docxGenerator = require('./service/docxGenerator');
 
 module.exports = {
@@ -7,28 +8,20 @@ module.exports = {
     const app = express();
 
     app.get('/:idutente', (req, res) => {
-      db.connect();
-      //'215'req.params.idutente
-      db.query(
-        `SELECT * FROM gestionale.cv_dipendenti WHERE fk_idaccount=${
-          req.params.idutente
-        };`,
-        function(error, results, fields) {
-          if (error) throw error;
-          console.log(error);
-          try {
-            docxGenerator.generate(
-              JSON.parse(results[0].curriculum),
-              req.params.idutente
-            );
-            // res.status(200);
-          } catch (err) {
-            // res.send(err);
-          }
-        }
+      if (isNaN(req.params.idutente)) return;
+      queries.selectCvByUserId(req.params.idutente).then(
+        queryResolve => {
+          docxGenerator.generate(queryResolve.data, req.params.idutente).then(
+            docxResolve => {
+              res.send(docxResolve).status(200);
+            },
+            docxErr => {
+              res.send(docxErr).status(500);
+            }
+          );
+        },
+        queryErr => res.send(queryErr).status(500)
       );
-
-      db.end();
     });
 
     app.listen(process.env.APP_PORT, () =>
