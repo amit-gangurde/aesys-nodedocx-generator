@@ -8,9 +8,9 @@ module.exports = db => {
         `SELECT * FROM cv_dipendenti WHERE fk_idaccount=${userid};`,
         function(error, results, fields) {
           if (error) throw error;
-
-          let cv = JSON.parse(results[0].curriculum);
+          
           try {
+            let cv = JSON.parse(results[0].curriculum);
             resolve({ status: 'success', data: cv });
           } catch (err) {
             reject({ status: 'error', message: err });
