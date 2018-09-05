@@ -18,11 +18,11 @@ module.exports = {
               res.download(docxResolve.downloadLink, `dipendente-${req.params.idutente}.docx`)
             },
             docxErr => {
-              res.send("L\'utente non ha ancora aggiornato il CV").status(500);
+              res.send("Si è verificato un errore durante la generazione del documento").status(500);
             }
           );
         },
-        queryErr => res.send(queryErr).status(500)
+        queryErr => res.send("L\'utente non ha ancora aggiornato il CV").status(500)
       );
     });
 
