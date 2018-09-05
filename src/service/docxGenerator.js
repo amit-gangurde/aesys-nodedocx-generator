@@ -20,6 +20,7 @@ module.exports = {
       var doc = new Docxtemplater();
       doc.loadZip(zip);
       data.id = id;
+      
       //set the templateVariables
       doc.setData(data);
 

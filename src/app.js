@@ -10,14 +10,18 @@ module.exports = {
     db.connect();
 
     app.get('/curriculum/:idutente', (req, res) => {
-      if (isNaN(req.params.idutente)) return;
-      queries.selectCvByUserId(req.params.idutente).then(
+      const { idutente } = req.params;
+
+      if (isNaN(idutente)) return;
+
+      queries.selectCvByUserId(idutente).then(
         queryResolve => {
-          docxGenerator.generate(queryResolve.data, req.params.idutente).then(
+          docxGenerator.generate(queryResolve.data, idutente).then(
             docxResolve => {
+              console.log(`[DOCUMENTO GENERATO][#${idutente}]`);
               res.download(
                 docxResolve.downloadLink,
-                `dipendente-${req.params.idutente}.docx`
+                `dipendente-${idutente}.docx`
               );
             },
             docxErr => {
@@ -38,7 +42,7 @@ module.exports = {
     });
 
     app.listen(PORT, () =>
-      console.log(`App in esecuzione sulla porta ${process.env.APP_PORT}`)
+      console.log(`App in esecuzione sulla porta ${process.env.PORT}`)
     );
   }
 };
