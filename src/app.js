@@ -6,14 +6,15 @@ module.exports = {
   start: () => {
     const express = require('express');
     const app = express();
+    db.connect();
 
-    app.get('/:idutente', (req, res) => {
+    app.get('/curriculum/:idutente', (req, res) => {
       if (isNaN(req.params.idutente)) return;
       queries.selectCvByUserId(req.params.idutente).then(
         queryResolve => {
           docxGenerator.generate(queryResolve.data, req.params.idutente).then(
             docxResolve => {
-              res.send(docxResolve).status(200);
+              res.download(docxResolve.downloadLink, `dipendente-${req.params.idutente}.docx`)
             },
             docxErr => {
               res.send(docxErr).status(500);
