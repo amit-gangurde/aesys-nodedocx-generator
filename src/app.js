@@ -18,7 +18,7 @@ module.exports = {
               res.download(docxResolve.downloadLink, `dipendente-${req.params.idutente}.docx`)
             },
             docxErr => {
-              res.send(docxErr).status(500);
+              res.send("L\'utente non ha ancora aggiornato il CV").status(500);
             }
           );
         },
