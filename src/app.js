@@ -1,6 +1,7 @@
 const db = require('./database/instance').getInstance();
 const queries = require('./database/queries')(db);
 const docxGenerator = require('./service/docxGenerator');
+const PORT = process.env.PORT || 5000
 
 module.exports = {
   start: () => {
@@ -25,7 +26,7 @@ module.exports = {
       );
     });
 
-    app.listen(process.env.APP_PORT, () =>
+    app.listen(PORT, () =>
       console.log(`App in esecuzione sulla porta ${process.env.APP_PORT}`)
     );
   }
