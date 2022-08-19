@@ -1,48 +1,45 @@
-const db = require('./database/instance').getInstance();
-const queries = require('./database/queries')(db);
 const docxGenerator = require('./service/docxGenerator');
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
+var fs = require("fs");
+const users = require("./details.json");
 
 module.exports = {
   start: () => {
     const express = require('express');
     const app = express();
-    db.connect();
 
-    app.get('/curriculum/:idutente', (req, res) => {
-      const { idutente } = req.params;
-
-      if (isNaN(idutente)) return;
-
-      queries.selectCvByUserId(idutente).then(
-        queryResolve => {
-          docxGenerator.generate(queryResolve.data, idutente).then(
+    app.get('/docGenerator', (req, res) => {
+      
+      const userId = '1';
+         docxGenerator.generate({"name": "AjaySingh Chavan" ,"profile":"ORD-19082022","company":"Enzigma Software Private Limited","product":[
+          {"sr":"1", "name":"Pro-Fit","quantity":"1","price":"232"},
+          {"sr":"2", "name":"Pro-Fit","quantity":"1","price":"554"},
+          {"sr":"3", "name":"Pro-Fit","quantity":"1","price":"278"},
+          {"sr":"4", "name":"Pro-Fit","quantity":"1","price":"921"}]}, userId).then(
             docxResolve => {
-              console.log(`[DOCUMENTO GENERATO][#${idutente}]`);
+              console.log(`[GENERATED DOCUMENT][#${userId}]`);
               res.download(
                 docxResolve.downloadLink,
-                `dipendente-${idutente}.docx`
+                `OrderEmail-${userId}.docx`
               );
             },
             docxErr => {
-              console.log('[ERRORE GENERAZIONE DOCUMENTO]', docxErr);
+              console.log('[DOCUMENT GENERATION ERROR]', docxErr);
               res
                 .send(
-                  'Si è verificato un errore durante la generazione del documento'
+                  'An error occurred while generating the document'
                 )
                 .status(500);
             }
           );
-        },
         queryErr => {
-          console.log('[ERRORE CV NON PRESENTE]', queryErr);
-          res.send("L'utente non ha ancora aggiornato il CV").status(500);
+          console.log('[CV ERROR NOT PRESENT]', queryErr);
+          res.send("The user has not yet updated the CV").status(500);
         }
-      );
     });
 
     app.listen(PORT, () =>
-      console.log(`App in esecuzione sulla porta ${process.env.PORT}`)
+      console.log(`App running on the PORT number `,PORT)
     );
   }
 };
