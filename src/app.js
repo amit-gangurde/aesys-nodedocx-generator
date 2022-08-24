@@ -11,11 +11,12 @@ module.exports = {
     app.get('/docGenerator', (req, res) => {
 
       const UserInfo = {
-        name: 'Amit Kautik Gangurde'
+        name: 'Amit Kautik Gangurde',
+        "orderid":"ORD-19082020"
       };   
       
       const userId = '1';
-         docxGenerator.generate({"fullname":UserInfo.name,"name": "Amit Gangurde" ,"orderid":"ORD-19082022","company":"Enzigma Software Private Limited","product":[
+         docxGenerator.generate({"fullname":UserInfo.name,"orderid":UserInfo.orderid,"company":"Enzigma Software Private Limited","product":[
           {"sr":"1", "name":"Laptop","quantity":"1","price":"22"},
           {"sr":"2", "name":"Keyboard","quantity":"10","price":"554"},
           {"sr":"3", "name":"Mouse","quantity":"3","price":"278"},
