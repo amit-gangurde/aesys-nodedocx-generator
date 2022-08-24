@@ -12,7 +12,7 @@ module.exports = {
 
       const UserInfo = {
         name: 'Amit Kautik Gangurde',
-        "orderid":"ORD-19082020"
+        orderid:"ORD-19082020"
       };   
       
       const userId = '1';
